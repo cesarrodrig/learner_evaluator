@@ -1,0 +1,6 @@
+[flake8]
+select = A,B,C,C4,D,E,F,I,PIE,W,S,N400
+ignore = B008,B306,C812,C813,C814,C815,C816,D1,E203,N814,PIE783,PIE785,PIE794,S101,S104,S311,SIM300,SIM901,W503,S320,S410,S113
+max-line-length = 119
+max-complexity = 5
+exclude = .git,__pycache__,venv,.venv,env,.env,settings.py,lazy_function.py

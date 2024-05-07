@@ -1,0 +1,38 @@
+[
+    {
+        "question": "Which learner has the most activity?",
+        "query": "MATCH (:Learner)-[:HAS_ACTIVITY]->(a:Activity) RETURN count(DISTINCT a)"
+    },
+    {
+        "question": "Which learning unit has been the most active?",
+        "query": "MATCH (:Activity)-[:FROM_LEARNING_UNIT]->(lu:`Learning Unit`) RETURN lu, count(*) as activity_count ORDER BY activity_count DESC LIMIT 1"
+    },
+    {
+        "question": "How many times has the learning unit 'OneCourse:OC_TalkingHead.1dac' been done?",
+        "query": "MATCH (:Activity)-[:FROM_LEARNING_UNIT]->(lu:`Learning Unit`) WHERE lu.id = 'OneCourse:OC_TalkingHead.1dac' RETURN count(*)"
+    },
+    {
+        "question": "Who has done the learning unit 'OneCourse:OC_TalkingHead.1dac' the most times?",
+        "query": "MATCH (lu:`Learning Unit`)-[:FROM_LEARNING_UNIT]-(a:Activity)-[:PERFORMED_BY_LEARNER]->(l:Learner) WHERE lu.id = 'OneCourse:OC_TalkingHead.1dac' RETURN l.id AS learner_id, COUNT(a) AS activity_count ORDER BY activity_count DESC LIMIT 1"
+    },
+    {
+        "question": "Who has the lowest average score in the learning unit 'OneCourse:OC_TalkingHead.1dac'?",
+        "query": "MATCH (lu:`Learning Unit`)-[:FROM_LEARNING_UNIT]-(a:Activity)-[:PERFORMED_BY_LEARNER]->(l:Learner) WHERE lu.id = 'OneCourse:OC_TalkingHead.1dac' RETURN l.id AS learner_id, AVG(a.score) AS avg_score ORDER BY avg_score LIMIT 1"
+    },
+    {
+        "question": "Learner 9c8d313c4f4df9571d5bd50f007cef1c has never done learning unit 'OneCourse:OC_PhraseSentenceType.4dd8', what score should we expect?",
+        "query": "MATCH (other:Learner)<-[:PERFORMED_BY_LEARNER]-(a:Activity)-[:FROM_LEARNING_UNIT]->(lu:`Learning Unit`) WHERE lu = 'OneCourse:OC_PhraseSentenceType.4dd8' AND other.learner_id <> '9c8d313c4f4df9571d5bd50f007cef1c' WITH AVG(a.score) AS avg_score RETURN avg_score as expected_score"
+    },
+    {
+        "question": "What are the details for learning unit 'OneCourse:OC_PhraseSentenceType.4dd8'?",
+        "query": "MATCH (lu:`Learning Unit`) WHERE lu.id = 'OneCourse:OC_TalkingHead.1dac' RETURN lu"
+    },
+    {
+        "question": "Compare learner 9c8d313c4f4df9571d5bd50f007cef1c performance on learning unit 'OneCourse:OC_TalkingHead.23de' to the unit's aggregate metrics. Explain the reason.",
+        "query": "MATCH (l:Learner)-[:PERFORMED_ACTIVITY]->(a:Activity)-[:FROM_LEARNING_UNIT]->(lu:`Learning Unit`) WHERE learner_id = '9c8d313c4f4df9571d5bd50f007cef1c' AND lu.id = 'OneCourse:OC_TalkingHead.23de' WITH l, AVG(a.score) AS learner_avg_score, AVG(a.foreground_duration) AS learner_avg_duration, COUNT(a) AS learner_activity_count MATCH (all_activities:Activity)-[:FROM_LEARNING_UNIT]->(lu) RETURN lu.id AS learning_unit_id, learner_avg_score, learner_avg_duration, learner_activity_count, AVG(all_activities.score) AS avg_unit_score, AVG(all_activities.foreground_duration) AS avg_unit_duration, COUNT(all_activities) AS total_activity_count"
+    },
+    {
+        "question": "Fetch the substrand of Learning Unit with id 'OneCourse:OC_TalkingHead.23de' and get all the Learning Units with that substrand.",
+        "query": "MATCH (lu1:`Learning Unit`) WHERE lu1.id = 'OneCourse:OC_TalkingHead.ce7e' WITH lu1.substrand AS substrand MATCH (lu2:`Learning Unit` {substrand: substrand}) RETURN lu2.grade, lu2.strand, lu2.substrand, lu2.content_title, lu2.exercise_type, lu2.content_description"
+    }
+]

@@ -1,0 +1,8 @@
+* Learning Unit: {content_id}
+* Subject: {subject}
+* Grade: {grade}
+* Substrand: {substrand}
+* Content Title: {content_title}
+* Exercise Type: {exercise_type}
+* Content Description
+{content_description}

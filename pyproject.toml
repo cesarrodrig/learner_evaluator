@@ -1,0 +1,32 @@
+[tool.black]
+line-length = 119
+exclude = '/venv|\.venv|env|ENV|env\.bak|venv\.bak/|migrations'
+
+[tool.isort]
+profile = "black"
+atomic = true
+ensure_newline_before_comments = true
+line_length = 119
+sections = ["FUTURE", "STDLIB", "THIRDPARTY", "FIRSTPARTY", "LOCALFOLDER"]
+
+[tool.poetry]
+name = "learner-evaluator"
+version = "0.1.0"
+authors = ["Cesar Rodriguez"]
+description = ""
+package-mode = true
+readme = "README.md"
+packages = [{include = "app"}]
+
+[tool.poetry.dependencies]
+python = "^3.9"
+langserve = "^0.1.1"
+pandas = "^2.2.2"
+pyarrow = "^16.0.0"
+xgboost = "^2.0.3"
+scikit-learn = "^1.4.2"
+jupyter = "^1.0.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
