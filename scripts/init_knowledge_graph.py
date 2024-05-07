@@ -6,9 +6,9 @@ import os
 from pathlib import Path
 
 import pandas as pd
-from neo4j import GraphDatabase
 
 from app.constants import DATA_DIR
+from neo4j import GraphDatabase
 
 os.environ["OPENAI_API_KEY"] = Path("OpenAIKey.txt").read_text().strip()
 
@@ -26,15 +26,15 @@ driver.verify_connectivity()
 
 
 def _create_nodes(df, node_name: str, id_col: str):
-    # # unique_constraint_query = f"""
-    # # CREATE CONSTRAINT {node_name}_id_unique
-    # # FOR (n:`{node_name}`)
-    # # REQUIRE n.id IS UNIQUE
-    # # """
-    # try:
-    #     driver.execute_query(unique_constraint_query, database_="neo4j")
-    # except RuntimeError:
-    #     pass
+    unique_constraint_query = f"""
+    CREATE CONSTRAINT {node_name}_id_unique
+    FOR (n:`{node_name}`)
+    REQUIRE n.id IS UNIQUE
+    """
+    try:
+        driver.execute_query(unique_constraint_query, database_="neo4j")
+    except RuntimeError:
+        pass
 
     node_query = (
         f"""

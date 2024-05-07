@@ -17,7 +17,7 @@ def build_cypher_qa_chain(graph: Neo4jGraph, llm: LLM) -> Chain:
     build_cypher_query_prompt = Path(PROMPTS_DIR / "build_cypher_query").read_text()
 
     prompt = FewShotPromptTemplate(
-        examples=examples[:8],
+        examples=examples,
         example_prompt=example_prompt,
         prefix=build_cypher_query_prompt,
         suffix="User input: {question}\nCypher query: ",
