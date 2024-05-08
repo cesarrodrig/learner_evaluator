@@ -11,6 +11,7 @@ from langchain_community.vectorstores import Neo4jVector
 from langchain_openai import ChatOpenAI, OpenAIEmbeddings
 from langserve import add_routes
 
+from app import config
 from app.constants import DATA_DIR, MODELS_DIR, NEO4J_PASSWORD, NEO4J_URI, NEO4J_USERNAME
 from app.knowledge_graph import build_cypher_qa_chain
 from app.learner_evaluator import build_learner_evaluator
@@ -22,11 +23,7 @@ app = FastAPI(
     description="Spin up a simple api server using Langchain's Runnable interfaces",
 )
 
-llm = ChatOpenAI(
-    temperature=0,
-    model="gpt-3.5-turbo",
-    # model="gpt-4-0125-preview",
-)
+llm = ChatOpenAI(temperature=config.LLM_TEMPERATURE, model=config.LLM)
 set_llm_cache(SQLiteCache())
 
 
@@ -47,7 +44,7 @@ learning_unit_repo = LearningUnitPandasRepository(learning_unit_df)
 learner_repo = LearnerPandasRepository(learner_df)
 
 regressor = xgb.XGBRegressor(enable_categorical=True, validate_parameters=True)
-regressor.load_model(MODELS_DIR / "xgboost_regressor.json")
+regressor.load_model(MODELS_DIR / config.Regressor)
 
 learner_evaluator = build_learner_evaluator(
     llm,

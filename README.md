@@ -21,9 +21,15 @@ poetry run python scripts/init_knowledge_graph.py
 poetry run python scripts/init_vector_store.py
 ```
 
-Export OpenAI API key available
+Export environment variables
 ```bash
 export OPENAI_API_KEY="$(cat OpenAIKey.txt)"
+
+# (Optional) For model evaluation
+export LANGCHAIN_TRACING_V2=...
+export LANGCHAIN_ENDPOINT=...
+export LANGCHAIN_PROJECT=...
+export LANGCHAIN_API_KEY=...
 ```
 
 ## Usage
@@ -70,6 +76,32 @@ Using the best regression model from the previous challenge, I created a pipelin
 
 At the end, the outputs for the 3 prompts are shown at the same time, which we take to be an evaluation of a learner's performance in the platform.
 
+#### QA Feedback Loop
+
+We want to make sure every step of the model is generating or producing correct output, otherwise, the
+chain of steps we have will propagate errors. Also, any changes we make to the prompts can cause unexpected
+effects, so without tests, we might be causing performance regression. Furthermore, we want to create
+QA datasets that we test our prompts and models against.
+
+We use LangChain for this task, where we are able to see individual steps and debug where things might going wrong,
+and evaluate how a model is doing on a given prompt. It also allows us to look at existing runs and save
+inputs/outputs as part of a dataset. This way we can start building test datasets, that can be used
+to evaluate the chain.
+
+I provided a short example of how I would approach the testing in `scripts/quality_assurance.py`. I queried
+the records for the highest and lowest average scores of a learning unit and learner. I used those
+as low and high knowledge state examples and saved the outputs of the LLM, making sure they made sense.
+This dataset is evaluated and several metrics are taken. This is to ensure our prompt is well-built and the
+model correctly assess the performance of the student.
+
+In production, this would scale into a bigger test suite, where each step in the chain is tested. Specifically,
+the steps building a prompt and querying a model, as well as our retriever using the vector store. We would
+also have tests for the entire chain, where we test the Learner Evaluator with mock learners.
+
+#### Potential improvements
+
+1. Assert that the summarization of all learning units results returns a correct assessment.
+
 ### Bonus: Knowledge Graph
 
 Using the learning activity, learner details, and course descriptions, I populated a Knowledge Graph with different nodes and relations. This KG can be queried using regular english. Under the hood, it is using an LLM to build a Cypher query, which is then used on the KG, and the results are fed back again to the LLM for an answer.
@@ -80,7 +112,7 @@ Example queries:
 * What's the average score of learning unit 'OneCourse:OC_TalkingHead.1dac' for students who took it on Tuesday?
 * Which learning unit is done most often in the public schools?
 
-#### Potential improvents
+#### Potential improvements
 
 1. Letting an LLM ingesting free text data to build the nodes and relations.
 2. Storing embeddings of the sample Cypher queries, then do similarity search using the given query to provide relevant few-shot samples.

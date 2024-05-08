@@ -26,6 +26,8 @@ pyarrow = "^16.0.0"
 xgboost = "^2.0.3"
 scikit-learn = "^1.4.2"
 jupyter = "^1.0.0"
+langsmith = "^0.1.54"
+langchainhub = "^0.1.15"
 
 [build-system]
 requires = ["poetry-core"]

@@ -1,0 +1,20 @@
+[
+    {
+        "id": "high_score",
+        "learning_unit_description": "* Learning Unit: OneCourse:OC_TalkingHead.2360\n* Subject: Language\n* Grade: PP2\n* Substrand: 1.6 Auditory memory\n* Content Title: What Lisa said - phonemes only\n* Exercise Type: - Matching what you hear\n- reading letter sounds\n* Content Description\n- The activity has A picture and A button below it and  letters arranged vertically on The right side\n- different letters are shown For each task\n- The learner gets verbal instructions to tap on The button\n- The picture says/sounds A letter sound\n- The learner matches The letter sound to its letter on The right by tapping on The letter\n- The first task is an example For The learner\n",
+        "learner_pred_score": 0.61,
+        "learner_mean_score": 0.95,
+        "learning_unit_mean_score": 0.54,
+        "learning_unit_std_score": 0.36,
+        "output": "The learner's average score in the learning unit is 0.95, which is significantly higher than the learning unit average score of 0.54. This indicates that the learner is performing well above the average in this particular learning unit, showing a strong understanding of auditory memory and phonemes. However, the predicted score of 0.61 suggests that there is still room for improvement and mastery in the learning unit, as it is lower than the learner's average score."
+    },
+    {
+        "id": "low_score",
+        "learning_unit_description": "* Learning Unit: OneCourse:OC_TalkingHead.5352\n* Subject: Language\n* Grade: PP2\n* Substrand: 1.6 Auditory memory\n* Content Title: What Lisa said - phonemes only\n* Exercise Type: - Matching what you hear\n- reading letter sounds\n* Content Description\n- The activity has A picture and A button below it and  letters arranged vertically on The right side\n- different letters are shown For each task\n- The learner gets verbal instructions to tap on The button\n- The picture says/sounds A letter sound\n- The learner matches The letter sound to its letter on The right by tapping on The letter\n- no example For The learner\n",
+        "learner_pred_score": 0.34,
+        "learner_mean_score": 0.0,
+        "learning_unit_mean_score": 0.57,
+        "learning_unit_std_score": 0.35,
+        "output": "The learner's predicted score for the learning unit \"OC_TalkingHead.5352\" is 0.34, which suggests that there is a low likelihood that they have already mastered the content. Furthermore, their average score in the learning unit is 0.0, indicating that they have not yet demonstrated proficiency in this area. With the learning unit's average score being 0.57 and a standard deviation of 0.35, it is clear that the learner is currently below the average performance level and has room for improvement in auditory memory skills related to phonemes."
+    }
+]
