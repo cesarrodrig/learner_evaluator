@@ -1,4 +1,4 @@
-from operator import itemgetter
+from operator import attrgetter, itemgetter
 from pathlib import Path
 from typing import Union
 
@@ -46,7 +46,7 @@ def build_learner_evaluator(
     return (
         evaluate_learner_on_every_unit
         | {
-            "context": itemgetter("documents") | _store_and_return_documents,
+            "context": itemgetter("documents") | RunnablePassthrough(),
             "learner_details": itemgetter("learner_id") | _get_learner_details_chain(learner_repo),
         }
         | {
@@ -64,6 +64,7 @@ def build_learner_evaluator(
             "knowledge_state": itemgetter("knowledge_state") | RunnablePassthrough(),
         }
         | _load_prompt_template("final_output")
+        | attrgetter("text")
     )
 
 
@@ -176,10 +177,3 @@ def _round_if_number(number: Union[float, str]) -> Union[float, str]:
     if isinstance(number, float):
         return round(number, 2)
     return number
-
-
-@chain
-def _store_and_return_documents(docs: list[Document]) -> list[Document]:
-    for doc in docs:
-        print(f"{doc.page_content}\n\n")
-    return docs

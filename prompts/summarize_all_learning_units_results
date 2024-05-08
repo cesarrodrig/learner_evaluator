@@ -8,11 +8,11 @@ You are given a learning report for the learner:
 
 {learner_details}
 
-Please perform the following task:
-
-1. Identify which skills or concepts the learner is struggling with by reading the reports and compare
-the learner's average scores with the learning unit's average scores. Use numbers to explain your answer.
-
 Here are the learning units and the knowledge report for this learner:
 
 {context}
+
+Please perform the following task:
+
+1. List the skills or concepts the learner is struggling with by comparing
+the learner's average scores with the learning unit's average scores. Provide only a list.

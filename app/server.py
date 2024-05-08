@@ -31,7 +31,6 @@ set_llm_cache(SQLiteCache())
 
 
 learning_unit_vectorstore = Neo4jVector(
-    index_name="learning_units",
     embedding=OpenAIEmbeddings(),
     url=NEO4J_URI,
     password=NEO4J_PASSWORD,
@@ -65,10 +64,6 @@ class EvaluateLearnerInput(TypedDict):
     learner_id: str
 
 
-class EvaluateLearnerOutput(TypedDict):
-    output: str
-
-
 class QueryKnowledgeGraphInput(TypedDict):
     query: str
 
@@ -79,7 +74,7 @@ class QueryKnowledgeGraphOutput(TypedDict):
 
 add_routes(
     app,
-    learner_evaluator.with_types(input_type=EvaluateLearnerInput, output_type=EvaluateLearnerOutput),
+    learner_evaluator.with_types(input_type=EvaluateLearnerInput, output_type=str),
     path="/evaluate_learner",
 )
 

@@ -12,10 +12,10 @@ And the assessment of their current learning and knowledge state is:
 
 {knowledge_state}
 
-Please perform the following task:
-
-1. Suggests the next learning unit that would best improve the learner's language skills.
-
-Here are the relevant learning units:
+And the relevant learning units:
 
 {relevant_learning_units}
+
+Please perform the following task:
+
+1. Suggest the next learning unit that would best improve the learner's language skills. Explain your reasoning and include only one suggestion.

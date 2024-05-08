@@ -15,7 +15,7 @@ Give the following statistics:
 * Learning Unit Average Score: {learning_unit_mean_score}
 * Learning Unit Score Standard Deviation: {learning_unit_std_score}
 
-1. Summarize in two clear sentences what the knowledge state of the learner is. Include numbers.
+1. Summarize in two clear sentences what the knowledge state of the learner is. Include numbers and provide reasoning to the conclusions.
 
 Assume the predicted score is the likelihood the learner has already mastered the learning unit.
 
