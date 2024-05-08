@@ -76,17 +76,21 @@ Using the best regression model from the previous challenge, I created a pipelin
 
 At the end, the outputs for the 3 prompts are shown at the same time, which we take to be an evaluation of a learner's performance in the platform.
 
-#### QA Feedback Loop
+#### QA: Feedback Loop and Testing
+
+We make use of LangChain to trace the inputs and outputs of the chain. This offers strong debugging
+capabilities since we can inspect each step individually and spot where problems might be happening.
+Lanchaing also allows us to look at existing runs and save inputs/outputs as part of a dataset.
+This way we can start building test datasets, that can be used to evaluate the chain.
+
+We evaluate the output with two metrics: for conciseness on the answer and that it contains
+and actual learning unit. We can monitor these metrics in LangChain and look out for inputs
+that are resulting in non-acceptable outputs.
 
 We want to make sure every step of the model is generating or producing correct output, otherwise, the
 chain of steps we have will propagate errors. Also, any changes we make to the prompts can cause unexpected
 effects, so without tests, we might be causing performance regression. Furthermore, we want to create
 QA datasets that we test our prompts and models against.
-
-We use LangChain for this task, where we are able to see individual steps and debug where things might going wrong,
-and evaluate how a model is doing on a given prompt. It also allows us to look at existing runs and save
-inputs/outputs as part of a dataset. This way we can start building test datasets, that can be used
-to evaluate the chain.
 
 I provided a short example of how I would approach the testing in `scripts/quality_assurance.py`. I queried
 the records for the highest and lowest average scores of a learning unit and learner. I used those
