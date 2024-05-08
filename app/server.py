@@ -1,3 +1,4 @@
+import os
 from operator import itemgetter
 from typing import TypedDict
 
@@ -5,6 +6,7 @@ import pandas as pd
 import xgboost as xgb
 from fastapi import FastAPI
 from langchain.cache import SQLiteCache
+from langchain.callbacks.tracers.evaluation import EvaluatorCallbackHandler
 from langchain.globals import set_llm_cache
 from langchain_community.graphs import Neo4jGraph
 from langchain_community.vectorstores import Neo4jVector
@@ -13,6 +15,7 @@ from langserve import add_routes
 
 from app import config
 from app.constants import DATA_DIR, MODELS_DIR, NEO4J_PASSWORD, NEO4J_URI, NEO4J_USERNAME
+from app.evaluators import ConcisenessEvaluator, LearningUnitEvaluator
 from app.knowledge_graph import build_cypher_qa_chain
 from app.learner_evaluator import build_learner_evaluator
 from app.repository import ActivityPandasRepository, LearnerPandasRepository, LearningUnitPandasRepository
@@ -55,6 +58,17 @@ learner_evaluator = build_learner_evaluator(
     regressor,
 )
 query_knowledge_graph = build_cypher_qa_chain(graph=graph, llm=llm)
+
+
+if bool(os.getenv("LANGCHAIN_TRACING_V2")):
+    learning_units = [learning_unit["learning_unit_id"] for learning_unit in learning_unit_repo.list()]
+    feedback_callback = EvaluatorCallbackHandler(
+        evaluators=[
+            ConcisenessEvaluator(),
+            LearningUnitEvaluator(learning_units=learning_units),
+        ]
+    )
+    learner_evaluator = learner_evaluator.with_config({"callbacks": [feedback_callback]})
 
 
 class EvaluateLearnerInput(TypedDict):
