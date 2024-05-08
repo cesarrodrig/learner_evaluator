@@ -2,6 +2,8 @@ from typing import Optional
 
 import pandas as pd
 
+from app.errors import LearnerIDNotFound, NoLearnerActivityError
+
 
 class AbstractRepository:
 
@@ -20,12 +22,17 @@ class ActivityPandasRepository(AbstractRepository):
 
     def get(self, learning_unit: Optional[str] = None, learner_id: Optional[str] = None) -> pd.DataFrame:
         learner_activity_df = self.activity_df
-        if learning_unit:
-            learner_activity_df = learner_activity_df[learner_activity_df.learning_unit == learning_unit]
         if learner_id:
             learner_activity_df = learner_activity_df[learner_activity_df.learner_id == learner_id]
         if learner_activity_df.empty:
-            raise RuntimeError(f"No past activity found for learner {learner_id} on learning unit {learning_unit}.")
+            raise LearnerIDNotFound(f"Learner with ID {learner_id} does not exist.")
+
+        if learning_unit:
+            learner_activity_df = learner_activity_df[learner_activity_df.learning_unit == learning_unit]
+        if learner_activity_df.empty:
+            raise NoLearnerActivityError(
+                f"No past activity found for learner {learner_id} on learning unit {learning_unit}."
+            )
 
         return learner_activity_df
 

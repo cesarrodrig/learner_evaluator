@@ -13,6 +13,7 @@ from langchain_core.runnables import RunnableLambda, RunnableParallel, RunnableP
 from langchain_core.vectorstores import VectorStore
 
 from app.constants import PROMPTS_DIR
+from app.errors import LearnerIDNotFound, NoLearnerActivityError
 from app.repository import ActivityPandasRepository, LearnerPandasRepository, LearningUnitPandasRepository
 
 
@@ -42,6 +43,7 @@ def build_learner_evaluator(
 
     suggest_next_learning_unit_prompt = _load_prompt_template("suggest_next_learning_unit")
     suggest_next_learning_unit = suggest_next_learning_unit_prompt | llm | StrOutputParser()
+    no_learner_found = RunnableLambda(lambda inputs: f"Learner with ID {inputs['learner_id']} does not exist.")
 
     return (
         evaluate_learner_on_every_unit
@@ -65,7 +67,7 @@ def build_learner_evaluator(
         }
         | _load_prompt_template("final_output")
         | attrgetter("text")
-    )
+    ).with_fallbacks([no_learner_found], exceptions_to_handle=[LearnerIDNotFound])
 
 
 def _build_evaluate_learner_on_unit_chain(
@@ -85,7 +87,7 @@ def _build_evaluate_learner_on_unit_chain(
     no_activity_found = RunnableLambda(lambda _: "No past activity found for learner.")
     learner_mean_score = RunnableLambda(
         lambda inputs: float(activity_repo.get(inputs["learning_unit_id"], inputs["learner_id"]).score.mean())
-    ).with_fallbacks([no_activity_found])
+    ).with_fallbacks([no_activity_found], exceptions_to_handle=[NoLearnerActivityError])
 
     learner_scores_and_unit_descriptions = RunnableParallel(
         {
