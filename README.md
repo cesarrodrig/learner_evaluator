@@ -102,9 +102,18 @@ In production, this would scale into a bigger test suite, where each step in the
 the steps building a prompt and querying a model, as well as our retriever using the vector store. We would
 also have tests for the entire chain, where we test the Learner Evaluator with mock learners.
 
+#### Pipeline of the Evaluator
+
+<img src="images/learner_evaluator.jpg" alt="learner_evalutor" title="tooltip text">
+
 #### Potential improvements
 
 1. Assert that the summarization of all learning units results returns a correct assessment.
+2. Build a dataset of expected outputs of each query to the LLM to perform prompt engineering with confidence.
+3. Figure out how to concurrently query for the learning unit summaries, as it is a sequential operation right now.
+4. Use the Knowledge Graph to look for learning units from learners with similar activity.
+5. Confirm/enhance the suggested learning units with the Knowledge Graph i.e. units with low score or activity.
+6. Provide filtering options (like grade) to the relevant learning units retriever.
 
 ### Bonus: Knowledge Graph
 
@@ -120,3 +129,4 @@ Example queries:
 
 1. Letting an LLM ingesting free text data to build the nodes and relations.
 2. Storing embeddings of the sample Cypher queries, then do similarity search using the given query to provide relevant few-shot samples.
+3. Storing the reports as nodes, along with the suggested learning unit.
