@@ -48,7 +48,7 @@ Go to http://localhost:8100/query_knowledge_graph/playground to run queries on t
 
 ## Overview
 
-### Challenge 1: Score Prediction
+### Part 1: Score Prediction
 
 Two models were trained and evaluated both as regressors and classifiers. The models were XGBoost and TabNet. These were chosen because of the small size of dataset,
 and appearance of several categorical features. I took a static approach, meaning the features are N-dimensional and non-temporal because I didn't consider the
@@ -56,7 +56,7 @@ amount of activity per user to be large enough to train a time-series prediction
 
 The models were not fitting the data so well, having high RMSE for regressors and low f1-score for classifiers. I took the XGBoost regressor to be used in Challenge 2 because it had the best performance of the two.
 
-### Challenge 2: Learner Evaluation
+### Part 2: Learner Evaluation
 
 Using the best regression model from the previous challenge, I created a pipeline that evaluates a learner's knowledge state. The approach to estimate the knowledge state is as follows:
 
